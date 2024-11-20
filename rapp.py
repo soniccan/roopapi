@@ -116,6 +116,7 @@ def process_file():
         target = request.files['target_path']
         filename = secure_filename(target.filename)
         target_path = os.path.join(app.config['TEMPLATE_FOLDER'], filename)
+        target.stream.seek(0) 
         target.save(target_path)
     elif 'target_path' in request.form:
         target_path = request.form['target_path']
