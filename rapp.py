@@ -189,15 +189,11 @@ def get_job_status(job_id):
     Returns:
         JSON: The status of the job.
     """
-    app.logger.info(f"Requested job_id: {job_id}")
-    app.logger.info(f"Current job statuses: {job_statuses}")
-
-    if job_id in job_statuses:
-        return jsonify({'job_id': job_id, 'status': job_statuses[job_id]})
+    # /{job_id}.png"がgenerated下にあるかどうかどうかで判定
+    if os.path.exists(f"{app.config['FINAL_FOLDER']}/{job_id}.png"):
+        return jsonify({'status': 'ok'}), 200
     else:
-        app.logger.warning(f'Job ID {job_id} not found in job_statuses')
-        return jsonify({'error': 'Job not found'}), 404
-
+        return jsonify({'status': 'not_ready'}), 200
 # Removed enhance_image endpoint
 
 @app.route('/job_status/')
